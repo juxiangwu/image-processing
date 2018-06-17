@@ -1,0 +1,15 @@
+1、最邻近元法
+2、双线性内插法
+3、三次内插法
+Inverse Distance to a Power（反距离加权插值法）”、
+“Kriging（克里金插值法）”、
+“Minimum Curvature（最小曲率)”、
+“Modified Shepard's Method（改进谢别德法）”、
+“Natural Neighbor（自然邻点插值法）”、
+“Nearest Neighbor（最近邻点插值法）”、
+“Polynomial Regression（多元回归法）”、
+“Radial Basis Function（径向基函数法）”、
+“Triangulation with Linear Interpolation（线性插值三角网法）”、
+“Moving Average（移动平均法）”、
+“Local Polynomial（局部多项式法）”
+https://blog.csdn.net/u013146742/article/details/52923864
