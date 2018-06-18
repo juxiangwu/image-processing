@@ -1,0 +1,2 @@
+[用python实现遗传算法（GA），微生物遗传算法（MGA）求函数最值]
+1.https://blog.csdn.net/winycg/article/details/78917528

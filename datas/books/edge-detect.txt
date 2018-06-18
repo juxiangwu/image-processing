@@ -1,3 +1,5 @@
 SUSAN算子
 1.https://blog.csdn.net/songzitea/article/details/8762846
 2.https://users.fmrib.ox.ac.uk/~steve/susan/
+[Susan算子边缘检测及数米粒图像处理]
+3.https://blog.csdn.net/ASDF1712/article/details/80245851
