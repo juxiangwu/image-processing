@@ -1,3 +1,12 @@
 https://blog.csdn.net/App_12062011/article/details/51764704
 
 https://blog.csdn.net/tonyshengtan/article/details/43794359
+
+[图像局部特征检测]
+http://www.cnblogs.com/ronny/category/366231.html
+[Halcon-边缘检测算子]
+https://blog.csdn.net/zzzkiti/article/details/80220120
+[计算机视觉中的边缘检测]
+https://blog.csdn.net/yewei11/article/details/50748012
+[Halcon-边缘检测算子]
+https://blog.csdn.net/zzzkiti/article/details/80220120
