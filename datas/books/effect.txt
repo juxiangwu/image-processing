@@ -1,3 +1,9 @@
 1.https://blog.csdn.net/column/details/photoshopimgproc.html?&page=1
 Photoshop特效算法实现
 2.https://blog.csdn.net/kezunhai/article/category/2747081/2
+
+3.https://github.com/FlexMonkey/Filterpedia/tree/master/Filterpedia
+
+4.https://msdn.microsoft.com/en-us/library/dn859593.aspx
+
+5.https://github.com/FlexMonkey/Filterpedia/tree/master/Filterpedia/customFilters
