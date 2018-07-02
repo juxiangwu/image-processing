@@ -1,2 +1,5 @@
 计算机视觉
 https://blog.csdn.net/kezunhai/article/category/1399734
+
+计算机视觉资源汇总
+https://blog.csdn.net/kezunhai/article/details/46784643
