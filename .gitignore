@@ -1,5 +1,9 @@
 ﻿/.ipynb_checkpoints
 /Filters/.ipynb_checkpoints
+/datas/.ipynb_checkpoints
+/datas/cl/.ipynb_checkpoints
+/datas/cuda/.ipynb_checkpoints
+/datas/glsl/.ipynb_checkpoints
 /图像滤波去噪分析/.ipynb_checkpoints
 /图像滤波去噪分析/图像颜色空间相互转换/.ipynb_checkpoints
 /图像滤波去噪分析/图像噪声概率密度分布/.ipynb_checkpoints
@@ -15,7 +19,7 @@
 /异构计算/OpenCL/.ipynb_checkpoints
 /异构计算/GLSL/.ipynb_checkpoints
 /异构计算/OpenGL/.ipynb_checkpoints
-/异构计算/OpenCL/.ipynb_checkpoints
+/异构计算/OpenCL图像处理/.ipynb_checkpoints
 /异构计算/pycuda-learning/.ipynb_checkpoints
 /数值计算/.ipynb_checkpoints
 /temp
