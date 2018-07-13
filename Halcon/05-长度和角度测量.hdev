@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.05">
+<procedure name="main">
+<interface/>
+<body>
+<c> *读取并截取图片</c>
+<l> dev_close_window()</l>
+<l> read_image (Image, '../datas/angles.png')</l>
+<l> crop_rectangle1 (Image, ImagePart, 75, 0, 400, 400)</l>
+<l> get_image_size (ImagePart, Width, Height)</l>
+<l> dev_open_window (0, 0, Width, Height, 'black', WindowHandle)</l>
+<l> dev_display (ImagePart)</l>
+<c> </c>
+<c> *获取图形的边界</c>
+<l> threshold (ImagePart, Regions, 0, 112)</l>
+<c> *分离三角形和圆形</c>
+<l> connection(Regions,ConnectedRegions)</l>
+<l> sort_region(ConnectedRegions,SortedRegions,'upper_left','true','column')</l>
+<l> select_obj(SortedRegions,Circle,1)</l>
+<l> select_obj(SortedRegions,Triangle,2)</l>
+<c> </c>
+<c> *获取三角形各边的信息</c>
+<l> skeleton(Triangle,TriangleSkeleton)</l>
+<l> gen_contours_skeleton_xld(TriangleSkeleton,TriangleContours,1,'filter')</l>
+<l> segment_contours_xld(TriangleContours,ContoursSplit,'lines_circles', 5, 4, 2)</l>
+<l> select_contours_xld(ContoursSplit,SelectedContours, 'contour_length',100, 999, -0.5, 0.5)</l>
+<l> fit_line_contour_xld (SelectedContours, 'tukey', -1, 10, 5, 2, RowBegin, ColBegin, RowEnd, ColEnd, Nr, Nc, Dist)</l>
+<c> </c>
+<c> *计算三角形角度</c>
+<l> angle_ll (RowBegin[0], ColBegin[0], RowEnd[0], ColEnd[0], RowBegin[1], ColBegin[1], RowEnd[1], ColEnd[1], Angle1)</l>
+<l> angle_ll (RowBegin[0], ColBegin[0], RowEnd[0], ColEnd[0], RowBegin[2], ColBegin[2], RowEnd[2], ColEnd[2], Angle2)</l>
+<l> angle_ll (RowBegin[1], ColBegin[1], RowEnd[1], ColEnd[1], RowBegin[2], ColBegin[2], RowEnd[2], ColEnd[2], Angle3)</l>
+<l> Angle1:=abs(deg(Angle1))</l>
+<l> Angle2:=abs(deg(Angle2))</l>
+<l> Angle3:=abs(deg(Angle3))</l>
+<c> </c>
+<c> *获取圆的信息</c>
+<l> area_center(Circle,AreaCircle, RowCircle, ColumnCircle)</l>
+<c> *计算圆心到三角形各边的距离</c>
+<l> Distance := []</l>
+<l> for Index := 0 to 2 by 1</l>
+<l>     distance_pl (RowCircle, ColumnCircle, RowBegin[Index], ColBegin[Index], RowEnd[Index], ColEnd[Index], ThisDistance)</l>
+<l>     Distance := [Distance,ThisDistance]</l>
+<l> endfor</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

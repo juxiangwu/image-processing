@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.05">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_close_window ()</l>
+<c>*读取图片</c>
+<l>read_image(Image,'../datas/digits/num_1.jpg')</l>
+<c>*图像预处理</c>
+<l>decompose3(Image,ImageR,ImageG,ImageB)</l>
+<l>threshold(ImageG,Regions,0,183)</l>
+<l>connection(Regions,Connection)</l>
+<c></c>
+<l>select_shape(Connection,SelectedRegions,'area','and',1987.72,7500)</l>
+<c></c>
+<c>*加载数字识别模型</c>
+<l>read_ocr_class_mlp('Document_0-9_NoRej.omc',OCRHandle)</l>
+<l>do_ocr_multi_class_mlp(SelectedRegions,ImageG,OCRHandle,Class,Confidence)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.05">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_close_window()</l>
+<l>read_image(Image,'../datas/plate2.jpg')</l>
+<l>decompose3(Image,ImageR,ImageG,ImageB)</l>
+<l>trans_from_rgb(ImageR,ImageG,ImageB,ImageResult1,ImageResult2,ImageResult3,'hsv')</l>
+<l>get_image_size (Image,Width,Height)</l>
+<l>dev_open_window (0, 0, Width, Height, 'black', WindowHandle)</l>
+<c></c>
+<l>threshold(ImageResult3, Regions,135,255)</l>
+<l>connection(Regions,Connection)</l>
+<l>select_shape (Connection, SelectedRegions, ['area','width','height','roundness'], 'and', [127.38,11.89,24.9602,0.4808], [168.73,14.077,26.0097,0.54074])</l>
+<l>connection(SelectedRegions,ConnectedRegions)</l>
+<l>sort_region (ConnectedRegions,SortedRegions,'upper_left','true','column')</l>
+<c></c>
+<l>read_ocr_class_mlp('Industrial_0-9A-Z_Rej.omc',OCRHandle)</l>
+<l>do_ocr_multi_class_mlp(SortedRegions,ImageResult2,OCRHandle, Class, Confidence)</l>
+<c>*显示识别的结果</c>
+<l> area_center(SortedRegions, Area, Row, Column)</l>
+<c> </c>
+<l> for Index := 0 to 3 by 1</l>
+<l>     disp_message(WindowHandle,Class[Index], 'window',Row[Index], Column[Index], 'black', 'false')</l>
+<l> endfor</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

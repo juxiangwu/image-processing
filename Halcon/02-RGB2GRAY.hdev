@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.05">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_close_window()</l>
+<l>read_image(Image,'../datas/bird.jpg')</l>
+<l>get_image_size(Image,Width,Height)</l>
+<l>rgb1_to_gray(Image,Gray)</l>
+<l>dev_open_window(0,0,Width,Height,'black',WindowHandle)</l>
+<l>dev_display(Gray)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

@@ -10,3 +10,5 @@ https://blog.csdn.net/zzzkiti/article/details/80220120
 https://blog.csdn.net/yewei11/article/details/50748012
 [Halcon-边缘检测算子]
 https://blog.csdn.net/zzzkiti/article/details/80220120
+[OpenCV]
+https://www.cnblogs.com/mikewolf2002/category/351010.html
