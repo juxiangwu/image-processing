@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.05">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_close_window ( )</l>
+<l>dev_open_window_fit_size (0, 0, 640, 480, -1, -1, WindowHandle)</l>
+<c> </c>
+<l>read_image (Decliningcarno, '../datas/plate2.jpg')</l>
+<c>*将一幅rgb三通道图像转换为3幅单通道图像</c>
+<l>decompose3 (Decliningcarno, Red, Green, Blue)</l>
+<c> </c>
+<c>*rgb空间转hsv空间</c>
+<l>trans_from_rgb (Red, Green, Blue, ImageResult_H, ImageResult_S, ImageResult_V, 'hsv')</l>
+<c>*对H分量作灰度分析提取 </c>
+<l>threshold (ImageResult_S, Regions, 223, 255)</l>
+<c>*开运算去椒盐噪点</c>
+<l>opening_rectangle1 (Regions, RegionOpening, 2, 2)</l>
+<c>*填充孔洞</c>
+<l>fill_up (RegionOpening, RegionFillUp)</l>
+<c>*断成不同的连通域</c>
+<l>connection (RegionFillUp, ConnectedRegions)</l>
+<c>*特征选择</c>
+<l>select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', 7096.33, 9199)</l>
+<c>*形状转换 使用凸性或外接矩形都可以</c>
+<l>shape_trans (SelectedRegions, RegionTrans, 'rectangle2')</l>
+<c>*求角度</c>
+<l>orientation_region (RegionTrans, Phi)</l>
+<c>*求区域面积，旋转坐标</c>
+<l>area_center (RegionTrans, Area, Row, Column)</l>
+<c>*求旋转矩阵--仿射变换矩阵</c>
+<l>vector_angle_to_rigid (Row, Column, Phi, Row, Column, 0, HomMat2D)</l>
+<c>*旋转区域，旋转图像</c>
+<l>affine_trans_region (RegionTrans, RegionAffineTrans, HomMat2D, 'false')</l>
+<l>affine_trans_image (Decliningcarno, ImageAffinTrans, HomMat2D, 'constant', 'false')</l>
+<c>*截取区域 图像Image相对于Region区域的图像</c>
+<l>reduce_domain (ImageAffinTrans, RegionAffineTrans, ImageReduced)</l>
+<c>*图像取反，由于识别用到训练字库都是暗字体</c>
+<l>invert_image (ImageReduced, ImageInvert)</l>
+<c>*转灰度图像</c>
+<l>rgb1_to_gray (ImageReduced, GrayImage)</l>
+<c>*灰度处理</c>
+<l>threshold (GrayImage, Regions1, 123, 194)</l>
+<l>connection (Regions1, ConnectedRegions1)</l>
+<l>select_shape (ConnectedRegions1, SelectedRegions1, 'area', 'and', 172.99, 448)</l>
+<l>sort_region (SelectedRegions1, SortedRegions, 'character', 'true', 'column')</l>
+<c>*读取</c>
+<l>read_ocr_class_mlp ('Industrial_0-9A-Z.omc', OCRHandle)</l>
+<c>*</c>
+<l>do_ocr_multi_class_mlp (SortedRegions, ImageInvert, OCRHandle, Class, Confidence)</l>
+<l>disp_message (WindowHandle, Class, 'window', 150, 150, 'black', 'true')</l>
+<c> </c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
