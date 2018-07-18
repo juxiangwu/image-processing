@@ -1,4 +1,6 @@
-[用python实现遗传算法（GA），微生物遗传算法（MGA）求函数最值]
+﻿[用python实现遗传算法（GA），微生物遗传算法（MGA）求函数最值]
 1.https://blog.csdn.net/winycg/article/details/78917528
 
 http://www.pymunk.org/en/latest/
+
+https://blog.csdn.net/trent1985?t=1
