@@ -1,0 +1,13 @@
+clc;
+clear;
+img = imread('../../datas/f4.jpg');
+imga = imresize(img,0.5);
+imgb = imresize(img,[100 100]);
+imgc = imresize(img,0.5,'bilinear');
+figure;
+subplot(2,2,1);
+imshow(imga);
+subplot(2,2,2);
+imshow(imgb);
+subplot(2,2,3);
+imshow(imgc);
