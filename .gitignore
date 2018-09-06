@@ -46,6 +46,7 @@
 /图像分析/.ipynb_checkpoints
 /图像处理Python语言实现/.ipynb_checkpoints
 /cpp-projects/opencv4-learning/opencv4-learning-build
+/cpp-projects/tiny-apps/dlib-learning-build
 *.a
 *.o
 *.exe
