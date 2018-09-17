@@ -47,6 +47,8 @@
 /图像处理Python语言实现/.ipynb_checkpoints
 /cpp-projects/opencv4-learning/opencv4-learning-build
 /cpp-projects/tiny-apps/dlib-learning-build
+/cuda-projects/cuda-learning-build
+/cuda-projects/build
 *.a
 *.o
 *.exe
