@@ -37,8 +37,10 @@ void wait_for_a_while(uv_idle_t* handle){
         cv::Mat gray;
         cv::cvtColor(src1,gray,cv::COLOR_BGR2GRAY);
         gray.convertTo(gray,CV_32FC1);
-        conv->convolve(gray,kernel_x,res);
+        cv::cuda::GpuMat dev_res;
+        conv->convolve(cv::cuda::GpuMat(gray),cv::cuda::GpuMat(kernel_x),dev_res);
         std::cout << res.size() << std::endl;
+        dev_res.download(res);
 //        cv::convertScaleAbs(gray,gray);
         cv::cvtColor(res,res,cv::COLOR_GRAY2BGR);
         cv::convertScaleAbs(res,res);

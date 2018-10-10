@@ -52,13 +52,36 @@ SUBDIRS += \
 #    48-createBoxFilter \
 #    49-createBoxMaxFilter \
 #    50-createBoxMinFilter \
-    51-createColumnSumFilter \
-    52-createDerivFilter \
-    53-createGaussianFilter \
-    54-createLaplacianFilter \
-    55-createLinearFilter \
-    56-createMorphologyFilter \
-    57-createRowSumFilter \
-    58-createScharrFilter \
-    59-createSeparableLinearFilter \
-    60-createSobelFilter
+#    51-createColumnSumFilter \
+#    52-createDerivFilter \
+#    53-createGaussianFilter \
+#    54-createLaplacianFilter \
+#    55-createLinearFilter \
+#    56-createMorphologyFilter \
+#    57-createRowSumFilter \
+#    58-createScharrFilter \
+#    59-createSeparableLinearFilter \
+#    60-createSobelFilter \
+#    61-bilateralFilter \
+#    62-blendLinear \
+#    63-createCannyEdgeDetector \
+    64-createTemplateMatching \
+#    65-meanShiftFiltering \
+#    66-meanShiftProc \
+#    67-meanShiftSegmentation \
+    68-alphaComp \
+    69-demosaicing \
+    70-gammaCorrection \
+    71-swapChannels \
+    72-calcHist \
+    73-createCLAHE \
+    74-equalizeHist \
+    75-createHoughCirclesDetector \
+    76-createHoughSegmentDetector \
+    77-createHoughLinesDetector \
+    78-createGoodFeaturesToTrackDetector \
+    79-createHarrisCorner \
+    80-createMinEigenValCorner \
+    81-CascadeClassifier \
+    82-HOG
+

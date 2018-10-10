@@ -17,50 +17,41 @@ extern "C"{
 }
 
 using namespace std;
-#define WINDOW_NAME	"CUDA createDFT"
+#define WINDOW_NAME	"CUDA bilateralFilter"
 cv::Mat src1,src2,dst,roi1,roi2,dst_roi,frame;
-
-
+int ksize = 1;
+float sigma_color = 0.0;
+float sigma_spatial = 0.0;
 void wait_for_a_while(uv_idle_t* handle){
     frame = cv::Scalar(49, 52, 49);
-    cvui::window(frame, 10, 10, 120, 200, "Settings");
+    cvui::window(frame, 10, 10, 200, 400, "Settings");
     cv::Mat src1_rz,src2_rz;
     cv::resize(src1,src1_rz,cv::Size(src1.cols/2,src1.rows/2));
     cv::resize(src2,src2_rz,cv::Size(src2.cols/2,src2.rows/2));
     src1_rz.copyTo(roi1);
-    //    src2_rz.copyTo(roi2);
 
-    if (cvui::button(frame, 15, 50,100,30, "createDFT")) {
-//        cv::Ptr<cv::cuda::DFT> dft = cv::cuda::createDFT(cv::Size(3,3),cv::DFT_ROWS);
-//        //        cv::Mat kernel_x = (cv::Mat_<float>(3,3) << 2, 0, -2, 4, 0, -4, 2, 0, -2);
-        cv::Mat res;
-        cv::Mat gray;
-        cv::cvtColor(src1,gray,cv::COLOR_BGR2GRAY);
-        gray.convertTo(gray,CV_32FC1);
-//        //        conv->convolve(gray,kernel_x,res);
-//        dft->compute(gray,res);
-//        //        std::cout << res.size() << std::endl;
-//        ////        cv::convertScaleAbs(gray,gray);
-//        cv::cvtColor(res,res,cv::COLOR_GRAY2BGR);
-//        cv::convertScaleAbs(res,res);
-//        dst = cv::Mat::zeros(res.size(),res.type());
-//        //        res.copyTo(dst);
-//        cv::imshow("dst",dst);
-        cv::cuda::GpuMat dev_src(gray),dev_dst;
-        cv::cuda::dft(dev_src,dev_dst,cv::Size(3,3));
-        dev_dst.download(res);
-        std::vector<cv::Mat> channels;
-        cv::split(res,channels);
-        channels[1].convertTo(channels[1],CV_8UC1);
-        cv::cvtColor(channels[1],dst,cv::COLOR_GRAY2BGR);
-        cv::imshow("dst",dst);
+    cvui::text(frame, 10, 40, "ksize");
+    cvui::trackbar(frame, 20, 60, 180, &ksize, (int)1, (int)15);
+
+    cvui::text(frame,10,140,"sigma color");
+    cvui::trackbar(frame, 20, 160, 180, &sigma_color, (float)0., (float)255.0);
+
+    cvui::text(frame,10,240,"sigma spatial");
+    cvui::trackbar(frame, 20, 250, 180, &sigma_spatial, (float)0., (float)255.0);
+
+    if (cvui::button(frame, 20, 330,180,30, "bilateralFilter")) {
+        cv::cuda::GpuMat dev_src(src1);
+        cv::cuda::GpuMat dev_dst;
+        cv::cuda::bilateralFilter(dev_src,dev_dst,ksize,sigma_color,sigma_spatial);
+        dev_dst.download(dst);
     }
+
 
 
     if(!dst.empty()){
         cv::Mat dst_rz;
         cv::resize(dst,dst_rz,cv::Size(dst.cols / 2,dst.rows/2));
-        dst_rz.copyTo(dst_roi);
+        dst_rz.copyTo(roi2);
     }
 
     cvui::update();
@@ -77,12 +68,13 @@ void wait_for_a_while(uv_idle_t* handle){
 
 int main()
 {
+    cv::cuda::printShortCudaDeviceInfo(cv::cuda::getDevice());
     src1 = cv::imread("../../../../datas/f1.jpg");
     src2 = cv::imread("../../../../datas/f2.jpg");
     frame = cv::Mat(600,1024,CV_8UC3);
-    roi1 = frame(cv::Rect(180,10,src1.cols / 2,src1.rows / 2));
+    roi1 = frame(cv::Rect(230,10,src1.cols / 2,src1.rows / 2));
     std::cout<<"roi1:" << cv::Rect(100,10,src1.cols / 2,src1.rows / 2) << std::endl;
-    roi2 = frame(cv::Rect(190+src1.cols / 2,10,src1.cols / 2,src1.rows / 2));
+    roi2 = frame(cv::Rect(240+src1.cols / 2,10,src1.cols / 2,src1.rows / 2));
     std::cout<<"roi2:" << cv::Rect(110+src1.cols / 2,10,src1.cols / 2,src1.rows / 2) << std::endl;
     int dst_x = (src1.cols+10) / 2;
     int dst_y = (20 + src1.rows / 2);

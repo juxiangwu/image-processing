@@ -17,44 +17,52 @@ extern "C"{
 }
 
 using namespace std;
-#define WINDOW_NAME	"CUDA createDFT"
+#define WINDOW_NAME	"CUDA blendLinear"
 cv::Mat src1,src2,dst,roi1,roi2,dst_roi,frame;
-
+float alpha = 0.5;
 
 void wait_for_a_while(uv_idle_t* handle){
     frame = cv::Scalar(49, 52, 49);
-    cvui::window(frame, 10, 10, 120, 200, "Settings");
+    cvui::window(frame, 10, 10, 200, 200, "Settings");
     cv::Mat src1_rz,src2_rz;
     cv::resize(src1,src1_rz,cv::Size(src1.cols/2,src1.rows/2));
     cv::resize(src2,src2_rz,cv::Size(src2.cols/2,src2.rows/2));
     src1_rz.copyTo(roi1);
-    //    src2_rz.copyTo(roi2);
+    src2_rz.copyTo(roi2);
+    cvui::text(frame, 10, 40, "alpha");
+    cvui::trackbar(frame, 20, 90, 180, &alpha, (float)0, (float)1);
 
-    if (cvui::button(frame, 15, 50,100,30, "createDFT")) {
-//        cv::Ptr<cv::cuda::DFT> dft = cv::cuda::createDFT(cv::Size(3,3),cv::DFT_ROWS);
-//        //        cv::Mat kernel_x = (cv::Mat_<float>(3,3) << 2, 0, -2, 4, 0, -4, 2, 0, -2);
-        cv::Mat res;
-        cv::Mat gray;
-        cv::cvtColor(src1,gray,cv::COLOR_BGR2GRAY);
-        gray.convertTo(gray,CV_32FC1);
-//        //        conv->convolve(gray,kernel_x,res);
-//        dft->compute(gray,res);
-//        //        std::cout << res.size() << std::endl;
-//        ////        cv::convertScaleAbs(gray,gray);
-//        cv::cvtColor(res,res,cv::COLOR_GRAY2BGR);
-//        cv::convertScaleAbs(res,res);
-//        dst = cv::Mat::zeros(res.size(),res.type());
-//        //        res.copyTo(dst);
-//        cv::imshow("dst",dst);
-        cv::cuda::GpuMat dev_src(gray),dev_dst;
-        cv::cuda::dft(dev_src,dev_dst,cv::Size(3,3));
-        dev_dst.download(res);
-        std::vector<cv::Mat> channels;
-        cv::split(res,channels);
-        channels[1].convertTo(channels[1],CV_8UC1);
-        cv::cvtColor(channels[1],dst,cv::COLOR_GRAY2BGR);
-        cv::imshow("dst",dst);
+    if (cvui::button(frame, 20, 160,180,30, "blendLinear")) {
+
+        std::vector<cv::Mat>channels1;
+        std::vector<cv::Mat>channels2;
+        std::vector<cv::Mat>dst_channels;
+        cv::split(src1,channels1);
+        cv::split(src2,channels2);
+        for(int i = 0;i < channels1.size();i++){
+            cv::Mat gray1 = channels1[i];
+            cv::Mat gray2 = channels2[i];
+            cv::Mat res;
+            gray1.convertTo(gray1,CV_32F);
+            gray2.convertTo(gray2,CV_32F);
+            cv::Mat w1(gray1.size(),gray1.type());
+            w1 = cv::Scalar(alpha);
+            cv::Mat w2(gray1.size(),gray1.type());
+            w2 = cv::Scalar(1.0-alpha);
+
+            cv::cuda::GpuMat dev_src1(gray1),dev_src2(gray2),dev_w1(w1),dev_w2(w2);
+            cv::cuda::GpuMat dev_dst;
+
+            cv::cuda::blendLinear(dev_src1,dev_src2,dev_w1,dev_w2,dev_dst);
+
+            dev_dst.download(res);
+            dst_channels.push_back(res);
+        }
+        cv::merge(dst_channels,dst);
+        dst.convertTo(dst,CV_8UC3);
+        cv::convertScaleAbs(dst,dst);
     }
+
 
 
     if(!dst.empty()){
@@ -77,12 +85,13 @@ void wait_for_a_while(uv_idle_t* handle){
 
 int main()
 {
+    cv::cuda::printShortCudaDeviceInfo(cv::cuda::getDevice());
     src1 = cv::imread("../../../../datas/f1.jpg");
     src2 = cv::imread("../../../../datas/f2.jpg");
     frame = cv::Mat(600,1024,CV_8UC3);
-    roi1 = frame(cv::Rect(180,10,src1.cols / 2,src1.rows / 2));
+    roi1 = frame(cv::Rect(230,10,src1.cols / 2,src1.rows / 2));
     std::cout<<"roi1:" << cv::Rect(100,10,src1.cols / 2,src1.rows / 2) << std::endl;
-    roi2 = frame(cv::Rect(190+src1.cols / 2,10,src1.cols / 2,src1.rows / 2));
+    roi2 = frame(cv::Rect(240+src1.cols / 2,10,src1.cols / 2,src1.rows / 2));
     std::cout<<"roi2:" << cv::Rect(110+src1.cols / 2,10,src1.cols / 2,src1.rows / 2) << std::endl;
     int dst_x = (src1.cols+10) / 2;
     int dst_y = (20 + src1.rows / 2);
